@@ -3,19 +3,22 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Set up Docker Buildx (for multi-platform builds)
     - name: Set up Docker
       uses: docker/setup-buildx-action@v2
 
+    # Step 3: Cache Docker layers to speed up future builds
     - name: Cache Docker layers
       uses: actions/cache@v3
       with:
@@ -24,16 +27,23 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-docker-
 
+    # Step 4: Build and push the backend Docker image
     - name: Build and push backend Docker image
       run: |
         docker build -t YuvrajS2767/backend:latest ./backend
         docker push YuvrajS2767/backend:latest
 
+    # Step 5: Build and push the frontend Docker image
     - name: Build and push frontend Docker image
       run: |
-        docker build -t your-username/frontend:latest ./frontend
-        docker push your-username/frontend:latest
+        docker build -t YuvrajS2767/frontend:latest ./frontend
+        docker push YuvrajS2767/frontend:latest
 
+    # Step 6: Deploy to Azure or another platform (Optional step, replace with actual deployment commands)
     - name: Deploy to Azure (or other platform)
       run: |
-       
+        echo "Deploying to Azure..."
+        # Add your deployment commands here, for example:
+        # az webapp deploy --name <your-app-name> --resource-group <your-resource-group> --src-path ./build
+        # For other platforms, replace with the respective CLI commands.
+
