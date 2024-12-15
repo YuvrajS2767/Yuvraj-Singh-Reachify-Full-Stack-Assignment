@@ -26,8 +26,8 @@ jobs:
 
     - name: Build and push backend Docker image
       run: |
-        docker build -t your-username/backend:latest ./backend
-        docker push your-username/backend:latest
+        docker build -t YuvrajS2767/backend:latest ./backend
+        docker push YuvrajS2767/backend:latest
 
     - name: Build and push frontend Docker image
       run: |
