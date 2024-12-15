@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v2
+
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Build and push backend Docker image
+      run: |
+        docker build -t your-username/backend:latest ./backend
+        docker push your-username/backend:latest
+
+    - name: Build and push frontend Docker image
+      run: |
+        docker build -t your-username/frontend:latest ./frontend
+        docker push your-username/frontend:latest
+
+    - name: Deploy to Azure (or other platform)
+      run: |
+       
